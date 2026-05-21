@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart - Ares Cafe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>YOUR SHOPPING CART</h1>
+        <p>Review Your Luxury Selection</p>
+    </header>
+
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="foodmenu.html" class="main-link">CONTINUE SHOPPING</a></li>
+            <li><a href="cart.html" class="cart-btn" style="background:#fff;">🛒 TOTAL CART</a></li>
+        </ul>
+    </nav>
+
+    <div style="max-width: 800px; margin: 40px auto; padding: 20px;">
+        <div id="cart-items" style="background:#1a1a1a; border: 1px solid #333; padding: 20px; border-radius: 8px;">
+            </div>
+
+        <div style="margin-top: 20px; text-align: right; background: #1a1a1a; padding: 20px; border: 1px solid #c9a96e;">
+            <h3 id="total-price" style="color: #c9a96e;">Total Bayar: Rp 0</h3>
+            <br>
+            <button onclick="checkout()" style="padding: 15px 40px; background:#c9a96e; border:none; font-weight:bold; cursor:pointer;">CHECKOUT SEKARANG</button>
+        </div>
+    </div>
+
+    <footer><p>&copy; 2026 Ares Cafe Luxury</p></footer>
+
+    <script>
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let container = document.getElementById('cart-items');
+            let totalDisplay = document.getElementById('total-price');
+            let total = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = "<p style='text-align:center;'>Keranjang masih kosong.</p>";
+                return;
+            }
+
+            container.innerHTML = "";
+            cart.forEach((item, index) => {
+                total += item.harga;
+                container.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding:15px 0;">
+                        <div>
+                            <h4 style="color:#c9a96e;">${item.nama}</h4>
+                            <p style="font-size:12px;">Rp ${item.harga.toLocaleString()}</p>
+                        </div>
+                        <button onclick="removeItem(${index})" style="background:red; color:white; border:none; padding:5px 10px; cursor:pointer;">Hapus</button>
+                    </div>
+                `;
+            });
+            totalDisplay.innerText = "Total Bayar: Rp " + total.toLocaleString();
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem('cart'));
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        function checkout() {
+            alert("Terima kasih! Pesanan Anda sedang diproses.");
+            localStorage.clear();
+            location.reload();
+        }
+
+        loadCart();
+    </script>
+</body>
+</html>
